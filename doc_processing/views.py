@@ -1,9 +1,10 @@
-from django.shortcuts import render
-from django.http import FileResponse
+from rest_framework.viewsets import ModelViewSet
 from .models import Files
+from .serializer import FileSerializer
 
-def index(request):
-    pdf = Files.objects.first()
-    path = pdf.file.path
-    return FileResponse(open(path, 'rb'))
 # Create your views here.
+
+class FileView(ModelViewSet):
+    queryset = Files.objects.all()
+    serializer_class = FileSerializer
+
