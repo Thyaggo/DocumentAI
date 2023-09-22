@@ -1,11 +1,19 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Worker, Viewer } from '@react-pdf-viewer/core';
+import { getPDF } from '../api/api';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 
 export const Pdfviewer = () => {
     const [url, setUrl] = React.useState('');
 
     // Handle the `onChange` event of the `file` input
+    useEffect(() => {
+        async function loadPdf() {
+            const res = await getPDF();
+            console.log(res.data);
+        }
+        loadPdf();
+    }, []);
     const onChange = (e) => {
         const files = e.target.files;
         files.length > 0 && setUrl(URL.createObjectURL(files[0]));
@@ -14,7 +22,7 @@ export const Pdfviewer = () => {
     return (
         <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
         <div>
-            <input type="file" accept=".pdf" onChange={onChange} />
+            
     
             <div style={{ height: '750px', width:'30vw' }}>
                 {url ? (
@@ -37,7 +45,7 @@ export const Pdfviewer = () => {
                             width: '100%',
                         }}
                     >
-                        Preview area
+                        <input type="file" accept=".pdf" onChange={onChange} />
                     </div>
                 )}
             </div>
