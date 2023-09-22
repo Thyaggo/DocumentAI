@@ -7,7 +7,7 @@ function App() {
     <BrowserRouter>
       <Navegation />
       <Routes>
-        <Route path="/file" element={<FilePage />} />
+        <Route path="/" element={<FilePage />} />
       </Routes>
     </BrowserRouter>
   );

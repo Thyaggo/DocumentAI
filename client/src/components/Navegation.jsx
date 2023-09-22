@@ -9,6 +9,7 @@ export function Navegation() {
             <div className="navbar-nav">
                 <Link to="/file" className="nav-link active" aria-current="page">File</Link>
                 <Link to="/task" className="nav-link">Task</Link>
+            
             </div>
             </div>
         </div>
