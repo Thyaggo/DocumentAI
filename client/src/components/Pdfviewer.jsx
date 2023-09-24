@@ -1,38 +1,50 @@
-import React, {useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Worker, Viewer } from '@react-pdf-viewer/core';
-import { getPDF } from '../api/api';
 import '@react-pdf-viewer/core/lib/styles/index.css';
+import { postPDF } from '../api/api'; // Importa la función postPDF desde tu archivo api
 
 export const Pdfviewer = () => {
-    const [url, setUrl] = React.useState('');
+    const [url, setUrl] = useState('');
+    const [pdfFile, setPdfFile] = useState(null);
 
-    // Handle the `onChange` event of the `file` input
-    useEffect(() => {
-        async function loadPdf() {
-            const res = await getPDF();
-            console.log(res.data);
-        }
-        loadPdf();
-    }, []);
     const onChange = (e) => {
-        const files = e.target.files;
-        files.length > 0 && setUrl(URL.createObjectURL(files[0]));
+        const file = e.target.files[0];
+        if (file) {
+            setPdfFile(file);
+            setUrl(URL.createObjectURL(file));
+        }
     };
 
-    return (
-        <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
-        <div>
-            
+    useEffect(() => {
+        const uploadPdf = () => {
+                const formData = new FormData();
+                formData.append('pdf', pdfFile);
+        
+                try {
+                    const response = postPDF(formData);
+                    console.log('PDF enviado exitosamente', response);
+                    // Lógica adicional después de enviar el PDF, si es necesario
+                } catch (error) {
+                    console.error('Error al enviar el PDF', error);
+                }
+            }
+        uploadPdf();
+    }, [pdfFile]);
     
-            <div style={{ height: '750px', width:'30vw' }}>
+
+    return (
+        <div>
+            <div style={{ height: '750px', width: '30vw' }}>
                 {url ? (
-                    <div
-                        style={{
-                            border: '1px solid rgba(0, 0, 0, 0.3)',
-                        }}
-                    >
-                        <Viewer fileUrl={url} />
-                    </div>
+                    <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+                        <div
+                            style={{
+                                border: '1px solid rgba(0, 0, 0, 0.3)',
+                            }}
+                        >
+                            <Viewer fileUrl={url} />
+                        </div>
+                    </Worker>
                 ) : (
                     <div
                         style={{
@@ -50,6 +62,5 @@ export const Pdfviewer = () => {
                 )}
             </div>
         </div>
-        </Worker>
     );
-}
+};

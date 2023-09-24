@@ -7,3 +7,17 @@ const api = axios.create({
 export const getPDF = () => {
     return api.get('/files');
 }
+
+export const postPDF = (data) => {
+    try {
+        const response = api.post('/files/', data, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Axios Error:", error);
+        throw error;
+    }
+}
