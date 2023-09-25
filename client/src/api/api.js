@@ -9,10 +9,15 @@ export const getPDF = () => {
 }
 
 export const postPDF = (data) => {
-    const response = api.post('/files/', data, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
-    });
-    return response.data;
+    try {
+        const response = api.post('/files/', data, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Axios Error:", error);
+        throw error;
+    }
 }

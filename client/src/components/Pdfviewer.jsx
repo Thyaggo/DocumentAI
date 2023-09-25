@@ -5,22 +5,31 @@ import { postPDF } from '../api/api'; // Importa la función postPDF desde tu ar
 
 export const Pdfviewer = () => {
     const [url, setUrl] = useState('');
-    const [pdfFile, setPdfFile] = useState({
-        file: "",
-    });
+    const [pdfFile, setPdfFile] = useState(null);
 
-    const handleImageChange = (e) => {
-        setPdfFile(e.target.files[0]);
+    const onChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setPdfFile(file);
+            setUrl(URL.createObjectURL(file));
+        }
     };
 
-    const uploadPdf = (e) => {
-        e.preventDefault();
-        const formData = new FormData();
-        formData.append("file", pdfFile.file);
-        console.log(formData);
-        postPDF(formData);
-    }
-    
+    useEffect(() => {
+        const uploadPdf = () => {
+                const formData = new FormData();
+                formData.append('pdf', pdfFile);
+        
+                try {
+                    const response = postPDF(formData);
+                    console.log('PDF enviado exitosamente', response);
+                    // Lógica adicional después de enviar el PDF, si es necesario
+                } catch (error) {
+                    console.error('Error al enviar el PDF', error);
+                }
+            }
+        uploadPdf();
+    }, [pdfFile]);
     
 
     return (
@@ -48,14 +57,10 @@ export const Pdfviewer = () => {
                             width: '100%',
                         }}
                     >
-                        <form onSubmit={uploadPdf} encType="multipart/form-data">
-                            <input name='file' type="file" accept=".pdf"onChange={handleImageChange} />
-                            <button type='submit'>Upload</button>
-                        </form>
+                        <input type="file" accept=".pdf" onChange={onChange} />
                     </div>
                 )}
             </div>
         </div>
     );
-}
-
+};
