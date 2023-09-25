@@ -5,32 +5,24 @@ import { postPDF } from '../api/api'; // Importa la función postPDF desde tu ar
 
 export const Pdfviewer = () => {
     const [url, setUrl] = useState('');
-    const [pdfFile, setPdfFile] = useState(null);
 
     const onChange = (e) => {
         const file = e.target.files[0];
+        console.log(file);
         if (file) {
-            setPdfFile(file);
             setUrl(URL.createObjectURL(file));
+            let formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = postPDF(formData);
+                console.log('PDF enviado exitosamente', response);
+                // Lógica adicional después de enviar el PDF, si es necesario
+            } catch (error) {
+                console.error('Error al enviar el PDF', error);
+            }
         }
     };
-
-    useEffect(() => {
-        const uploadPdf = () => {
-                const formData = new FormData();
-                formData.append('pdf', pdfFile);
-        
-                try {
-                    const response = postPDF(formData);
-                    console.log('PDF enviado exitosamente', response);
-                    // Lógica adicional después de enviar el PDF, si es necesario
-                } catch (error) {
-                    console.error('Error al enviar el PDF', error);
-                }
-            }
-        uploadPdf();
-    }, [pdfFile]);
-    
 
     return (
         <div>
