@@ -5,7 +5,6 @@ import { Navegation } from './components/Navegation.jsx';
 function App() {
   return (
     <BrowserRouter>
-      <Navegation />
       <Routes>
         <Route path="/" element={<FilePage />} />
       </Routes>
