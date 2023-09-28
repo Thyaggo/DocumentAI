@@ -34,7 +34,7 @@ export const Pdfviewer = () => {
                     </main>
                 </Worker>
             ) : (
-                <main className='flex h-screen items-center border-dashed border-2 border-x-neutral-500'> 
+                <main className='h-screen flex items-center border-dashed border-2 border-x-neutral-500'> 
                     <input type="file" accept=".pdf" onChange={onChange} />
                 </main>
             )}
