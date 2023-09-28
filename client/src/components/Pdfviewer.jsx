@@ -26,7 +26,7 @@ export const Pdfviewer = () => {
     };
 
     return (
-        <section className='box-border'>
+        <section className='w-4/12 box-border'>
             {url ? (
                 <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
                     <main>
