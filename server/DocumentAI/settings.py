@@ -129,7 +129,7 @@ STATIC_URL = 'static/'
 MEDIA_URL = '/pdf/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'static'
+    os.path.join(BASE_DIR, 'static'),  # Replace 'static' with your actual static files directory
 ]
 
 MEDIA_ROOT = BASE_DIR / 'static/pdf'
