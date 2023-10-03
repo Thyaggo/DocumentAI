@@ -22,7 +22,7 @@ export function Pdfchat(){
     }
 
     return(
-        <section className="w-7/12 grid grid-flow-col grid-rows-[87%_13%]">
+        <section className="w-[45%] grid grid-flow-col grid-rows-[87%_13%]">
             <main className="flex flex-col overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-md">
                 {promtList.map((promt, index) => (
                     <div key={index} className="flex justify-end mx-5 my-2">
