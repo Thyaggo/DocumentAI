@@ -12,7 +12,7 @@ export function NavBar() {
             </div>
             <ul className="flex flex-col justify-start mx-5 px-3 py-2">
                 <li className="flex items-center my-2">
-                    <BsChatLeftText className="text-teal-700 w-4 h-4"/>
+                    <BsChatLeftText className="text-cyan-700 w-4 h-4"/>
                     <h6 className="m-2 font-extralight">Chat</h6>
                 </li>
                 <li className="flex items-center my-2">

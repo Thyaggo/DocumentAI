@@ -22,7 +22,7 @@ export function Pdfchat(){
     }
 
     return(
-        <section className="bg-zinc-800 w-[43%] grid grid-flow-col grid-rows-[87%_13%]">
+        <section className="bg-neutral-800 w-[43%] grid grid-flow-col grid-rows-[87%_13%]">
             <main className="flex flex-col overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-md">
                 {promtList.map((promt, index) => (
                     <div key={index} className="flex justify-end mx-5 my-2">
@@ -33,9 +33,9 @@ export function Pdfchat(){
                     </div>
                 ))}
             </main>
-            <form onSubmit={onSubmit} className="flex items-center justify-center ">
-                <div className="flex justify-between  w-3/4 px-1 py-2 rounded-md bg-neutral-700">
-                    <input type="text" value={promt} onChange={e => setPromt(e.target.value)} className="w-11/12 mx-2 h-full bg-transparent focus-visible:outline-none"/>
+            <form onSubmit={onSubmit} className="flex items-center justify-center">
+                <div className="flex justify-between w-3/4 px-1 py-2 h-auto rounded-md bg-neutral-700" >
+                    <textarea value={promt} onChange={e => setPromt(e.target.value)} className="w-11/12 m-3 bg-transparent focus-visible:outline-none resize-none" />
                     <button type="submit" className="px-3"> <LuSendHorizonal/> </button>
                 </div>
             </form>
