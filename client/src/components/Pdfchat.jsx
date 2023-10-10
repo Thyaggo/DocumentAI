@@ -29,7 +29,7 @@ export function Pdfchat() {
     }, [promt]);
 
     return (
-        <section className="bg-neutral-800 w-[43%] h-screen box-border flex flex-col">
+        <section className="bg-neutral-800 w-[50%] h-screen box-border flex flex-col">
             <main className="flex flex-col overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-md">
                 {promtList.map((promt) => (
                     <><div className="self-end mx-5 my-2">
