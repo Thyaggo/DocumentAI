@@ -1,26 +1,33 @@
 import React from "react";
-import { SVGComponent } from "../assets/svgviewer-react-output";
+import { SVGComponent } from "../assets/svglogo";
 import { BiSearch } from "react-icons/bi";
 import { BsChatLeftText } from "react-icons/bs";
 
 
 export function NavBar() {
+    const [toggle, setToggle] = React.useState(false);
+
     return (
-        <nav className="w-[10%] flex flex-col divide-y-2 divide-stone-700/40">
-            <div className="flex items-center justify-center m-6">
+        
+        <nav className={`flex flex-col divide-y-2 ${toggle ? "w-[25%]" : "w-fit"} divide-stone-700/40 bg-emerald-950/40`}>
+            <div className="flex items-center justify-center m-6 ">
                 <SVGComponent className="w-10 h-10" />
-                <h6 className="m-2 font-semibold text-lg" >Document.AI</h6>
             </div>
-            <ul className="flex flex-col justify-start mx-5 px-3 py-2">
-                <li className="flex items-center my-2">
-                    <BsChatLeftText className="text-cyan-700 w-4 h-4"/>
-                    <h6 className="m-2 font-extralight">Chat</h6>
+
+            <ul className="flex flex-col justify-center items-center box-border">
+                <li className="my-4" onClick={() => setToggle(!toggle)}>
+                    <BsChatLeftText className="text-cyan-700"/>
                 </li>
-                <li className="flex items-center my-2">
-                    <BiSearch className="text-emerald-300 w-4 h-4"/>
-                    <h6 className="m-2 font-extralight">Search</h6>
+                {toggle && (
+                    <div className="w-full flex items-center justify-center bg-neutral-600">
+                        <p className="text-xs font-extralight text-white">1</p>
+                    </div>
+                )}
+                <li className="my-4">
+                    <BiSearch className="text-emerald-300"/>
                 </li>
             </ul>
+
         </nav>
     );
 }

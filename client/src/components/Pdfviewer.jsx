@@ -28,7 +28,7 @@ export const Pdfviewer = () => {
     const [url, setUrl] = useState('');
 
     return (
-        <section className='w-[40%] box-border'>
+        <section className='w-full max-w-[45%] box-border'>
             {url ? (
                 <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
                     <main className='h-screen'>

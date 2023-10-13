@@ -29,39 +29,41 @@ export function Pdfchat() {
     }, [promt]);
 
     return (
-        <section className="bg-neutral-800 w-[50%] h-screen box-border flex flex-col">
-            <main className="flex flex-col overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-md">
+        <div className="bg-emerald-950/20 w-full max-w-[50%] h-screen box-border flex flex-col">
+        <section className=" h-[90vh]  overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-md">
+            <main className="flex flex-col">
                 {promtList.map((promt) => (
-                    <><div className="self-end mx-5 my-2">
-                        <div className=" bg-neutral-700 rounded-md px-2 py-1 my-1 ">
+                    <><div className="max-w-[75%] self-end mx-5 my-2 overflow-x-auto scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-md">
+                        <div className="w-fit bg-neutral-700 rounded-md px-2 py-1 my-1">
                             <p>{promt.text}</p>
                             <small className="text-[0.6rem] opacity-50">
                                 {promt.timestamp}
                             </small>
                         </div>
                     </div><div className="self-start mx-5 my-2">
-                        <div className=" bg-neutral-700 rounded-md px-2 py-1 my-1 ">
-                            <p>{promt.response}</p>
-                            <small className="text-[0.6rem] opacity-50">
-                                {promt.timestamp}
-                            </small>
-                        </div>
-                    </div></>
+                            <div className=" bg-neutral-700 rounded-md px-2 py-1 my-1 ">
+                                <p>{promt.response}</p>
+                                <small className="text-[0.6rem] opacity-50">
+                                    {promt.timestamp}
+                                </small>
+                            </div>
+                        </div></>
                 ))}
             </main>
+        </section>
+        <section className="flex items-center justify-center box-border">
             <form
                 onSubmit={onSubmit}
-                className="flex items-center justify-center mt-auto mb-5 box-border "
+                className="mb-5 w-3/4 border-box"
             >
-                <div className="flex justify-between w-3/4 px-1 py-2 rounded-md bg-neutral-700 border-box ">
+                <div className="flex justify-between px-1 py-2 rounded-md bg-neutral-700  ">
                     <textarea
                         value={promt}
                         ref={textAreaRef}
                         rows="1"
                         placeholder="Escribe un mensaje"
                         onChange={(e) => setPromt(e.target.value)}
-                        className="w-11/12 max-h-56 m-2 bg-transparent focus-visible:outline-none resize-none scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-md"
-                    />
+                        className="w-11/12 max-h-40 m-2 bg-transparent focus-visible:outline-none resize-none scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-md" />
                     <button type="submit" className="px-2 pb-3 mt-auto">
                         {" "}
                         <LuSendHorizonal />{" "}
@@ -69,5 +71,6 @@ export function Pdfchat() {
                 </div>
             </form>
         </section>
+        </div>
     );
 }
