@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
+import { postPrompts } from "../api/api";
 import { LuSendHorizonal } from "react-icons/lu";
 
-export function Pdfchat() {
+export function Pdfchat(props) {
     const textAreaRef = useRef(null);
     const [promt, setPromt] = useState("");
     const [promtList, setPromtList] = useState([]);
@@ -15,12 +16,17 @@ export function Pdfchat() {
 
         const newPromt = {
             text: promt,
+            chatid : props.id,
             response: "Hola",
             timestamp: new Date().toLocaleTimeString(),
         };
 
         setPromtList([...promtList, newPromt]);
         setPromt("");
+
+        // Enviar mensaje al servidor
+        response = postPrompts(newPromt);
+        console.log(response);
     }
 
     useEffect(() => {

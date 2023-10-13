@@ -1,18 +1,12 @@
 import React, { useState } from "react";
-import Chat from "./Chat";
+import { Pdfchat } from "./Pdfchat";
+import { Pdfviewer } from "./Pdfviewer";
 
 const ChatRoom = () => {
-    const [messages, setMessages] = useState([]);
-
-    const handleSendMessage = (message) => {
-        setMessages([...messages, message]);
-    };
 
     return (
-        <div>
-            <h1>Chat Room</h1>
-            <Chat messages={messages} onSendMessage={handleSendMessage} />
-        </div>
+        <><Pdfviewer />
+        <Pdfchat /></>
     );
 };
 

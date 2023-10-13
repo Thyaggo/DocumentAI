@@ -21,3 +21,14 @@ export const postPDF = (data) => {
         throw error;
     }
 }
+
+//post the promts to the backend
+export const postPrompts = (data) => {
+    try {
+        const response = api.post('/prompts/', data);
+        return response.data;
+    } catch (error) {
+        console.error("Axios Error:", error);
+        throw error;
+    }
+}
