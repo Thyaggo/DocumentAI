@@ -8,8 +8,4 @@ from .serializer import FileSerializer
 class FileView(ModelViewSet):
     queryset = Files.objects.all()
     serializer_class = FileSerializer
-    parser_classes = (MultiPartParser, FormParser)
-
-    def perform_create(self, serializer):
-        serializer.save()
 

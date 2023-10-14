@@ -22,10 +22,15 @@ export const postPDF = (data) => {
     }
 }
 
+export const getChatrooms = async () => {
+    const response = await api.get('/server/chatrooms');
+    return response;
+}
+
 //post the promts to the backend
 export const postPrompts = (data) => {
     try {
-        const response = api.post('/prompts/', data);
+        const response = api.post('servers/prompts/', data);
         return response.data;
     } catch (error) {
         console.error("Axios Error:", error);
