@@ -27,6 +27,35 @@ export const getChatrooms = async () => {
     return response;
 }
 
+export const getPromt = async (id) => {
+    try {
+        const response = await api.get('/server/promts',{
+            params: {
+                chatroom: id
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Axios Error:", error);
+        throw error;
+    }
+}
+
+export const getRespond = (id) => {
+    try {
+        const response = api.get('/server/responses',{
+        params: {
+            chatroom: id
+          }
+      });
+      return response.data;
+  } catch (error) {
+      console.error("Axios Error:", error);
+      throw error;
+  }
+}
+
+
 //post the promts to the backend
 export const postPrompts = (data) => {
     try {

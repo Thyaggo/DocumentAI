@@ -3,13 +3,15 @@ import { SVGComponent } from "../assets/svglogo";
 import { BiSearch } from "react-icons/bi";
 import { BsChatLeftText } from "react-icons/bs";
 import { getChatrooms } from "../api/api";
-
-
+import { MyContext } from "../Context";
 
 export function NavBar() {
     const [toggle, setToggle] = React.useState(false);
     const [chatrooms, setChatrooms] = React.useState([]);
-    const [currentChatroom, setCurrentChatroom] = React.useState(null);
+
+    const {setMyState} = React.useContext(MyContext);
+
+    //const [updateState] = React.useContext(MyContext);
 
     useEffect(() => {
         // Aquí dentro, realizas la solicitud HTTP utilizando Axios o cualquier otra biblioteca que prefieras
@@ -39,7 +41,7 @@ export function NavBar() {
                     <ul className="w-full flex items-center justify-center bg-neutral-600">
                         <li>
                             {chatrooms.map((chatroom) => (
-                                <div key={chatroom.id} className="flex flex-col justify-center items-center" onClick={() => setCurrentChatroom(chatroom.id)}>
+                                <div key={chatroom.id} className="flex flex-col justify-center items-center" onClick={() => setMyState(chatroom.id)}>
                                     <span>{chatroom.name}</span>
                                 </div>
                             ))}
