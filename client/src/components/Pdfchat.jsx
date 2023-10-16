@@ -20,15 +20,15 @@ export function Pdfchat() {
         }
 
         const newPromt = {
-            text: promt,
-            chatid : myState,
-            timestamp: new Date().toLocaleTimeString(),
+            promt: promt,
+            chatroom : myState,
+            created_at: new Date().toLocaleTimeString(),
         };
 
         const newResponse = {
-            text: 'Hola',
-            chatid : myState,
-            timestamp: new Date().toLocaleTimeString(),
+            response: 'Hola',
+            chatroom : myState,
+            created_at: new Date().toLocaleTimeString(),
         };
 
         setPromtList([...promtList, newPromt]);
@@ -41,55 +41,54 @@ export function Pdfchat() {
         textAreaRef.current.style.height = textAreaRef.current.scrollHeight + "px";
     }, [promt]);
 
-    console.log(myState)
 
     useEffect(() => {
-        // Aquí dentro, realizas la solicitud HTTP utilizando Axios o cualquier otra biblioteca que prefieras
         if (myState !== undefined) {
             getPromt(myState)
-                .then(responsed => {
-                    // Cuando la promesa se resuelve con éxito, actualizas el estado con los datos
-                    setPromtList(responsed.data);
+                .then(response => {
+                    // Verificar si response.data no es undefined y tiene una longitud mayor que cero
+                    if (response !== undefined && response.length !== 0) {
+                        setPromtList(response);
+                    }
                 })
                 .catch(error => {
-                    // Manejas errores si la promesa se rechaza
                     console.error(error);
                 });
             getRespond(myState)
                 .then(response => {
-                    // Cuando la promesa se resuelve con éxito, actualizas el estado con los datos
-                    setResponseList(response.data);
+                    // Verificar si response.data no es undefined y tiene una longitud mayor que cero
+                    if (response !== undefined && response.length !== 0) {
+                        setResponseList(response);
+                    }
                 })
                 .catch(error => {
-                    // Manejas errores si la promesa se rechaza
                     console.error(error);
                 });
         }
     }, [myState]);
+    
 
     return (
-        <div className="bg-emerald-950/20 w-full max-w-[50%] h-screen box-border flex flex-col">
+        <div className="bg-stone-800 w-full max-w-[55%] h-screen box-border flex flex-col">
             <section className=" h-[90vh]  overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-md">
                 <main className="flex flex-col">
                     {promtList.map((promt, index) => (
-                        <div key={index} className="max-w-[75%] self-end mx-5 my-2 overflow-x-auto scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-md">
-                            <div className="w-fit bg-neutral-700 rounded-md px-2 py-1 my-1">
-                                <p>{promt.text}</p>
+                        <><div key={index} className="max-w-[75%] self-end mx-5 my-2 overflow-x-auto scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-md">
+                            <div className="w-fit bg-stone-700 rounded-md px-2 py-1 my-1">
+                                <p>{promt.promt}</p>
                                 <small className="text-[0.6rem] opacity-50">
-                                    {promt.timestamp}
+                                    {promt.created_at}
                                 </small>
                             </div>
                         </div>
-                    ))}
-                    {responseList.map((response, index) => (
-                        <div key={index} className="max-w-[75%] self-start mx-5 my-2 overflow-x-auto scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-md">
-                            <div className="w-fit bg-neutral-700 rounded-md px-2 py-1 my-1">
-                                <p>{response.text}</p>
+                        <div key={responseList[index]+1} className="max-w-[75%] self-start mx-5 my-2 overflow-x-auto scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-md">
+                            <div className="w-fit bg-stone-700 rounded-md px-2 py-1 my-1">
+                                <p>{responseList[index].response}</p>
                                 <small className="text-[0.6rem] opacity-50">
-                                    {response.timestamp}
+                                    {responseList[index].created_at}
                                 </small>
                             </div>
-                        </div>
+                        </div></>
                     ))}
                 </main>
             </section>
@@ -98,14 +97,15 @@ export function Pdfchat() {
                     onSubmit={onSubmit}
                     className="mb-5 w-3/4 border-box"
                 >
-                    <div className="flex justify-between px-1 py-2 rounded-md bg-neutral-700  ">
+                    <div className="flex justify-between px-1 py-2 rounded-md bg-stone-700">
                         <textarea
                             value={promt}
                             ref={textAreaRef}
                             rows="1"
                             placeholder="Escribe un mensaje"
                             onChange={(e) => setPromt(e.target.value)}
-                            className="w-11/12 max-h-40 m-2 bg-transparent focus-visible:outline-none resize-none scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-md" />
+                            className="w-11/12 max-h-40 m-2 bg-transparent focus-visible:outline-none resize-none scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-md" 
+                        />
                         <button type="submit" className="px-2 pb-3 mt-auto">
                             {" "}
                             <LuSendHorizonal />{" "}

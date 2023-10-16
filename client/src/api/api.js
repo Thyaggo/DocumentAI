@@ -4,8 +4,17 @@ const api = axios.create({
     baseURL: 'http://localhost:8000',
 });
 
-export const getPDF = () => {
-    return api.get('/files');
+export const getPDF = async (id) => {
+    try {
+    return await api.get('/files',{
+        params: {
+            chatroom: id
+        }
+    });
+    } catch (error) {
+        console.error("Axios Error:", error);
+        throw error;
+    }
 }
 
 export const postPDF = (data) => {
@@ -41,9 +50,9 @@ export const getPromt = async (id) => {
     }
 }
 
-export const getRespond = (id) => {
+export const getRespond = async (id) => {
     try {
-        const response = api.get('/server/responses',{
+        const response = await api.get('/server/responses',{
         params: {
             chatroom: id
           }

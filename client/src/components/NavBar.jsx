@@ -28,29 +28,24 @@ export function NavBar() {
 
     return (
         
-        <nav className={`flex flex-col divide-y-2 ${toggle ? "w-[25%]" : "w-fit"} divide-stone-700/40 bg-emerald-950/40`}>
+        <nav className={`flex flex-col divide-y-2 box-border ${toggle ? "w-[25%]" : "w-fit"} divide-stone-700/40 bg-gradient-to-t from-stone-700`}>
             <div className="flex items-center justify-center m-6 ">
                 <SVGComponent className="w-10 h-10" />
             </div>
 
             <ul className="flex flex-col justify-center items-center box-border">
                 <li className="my-4" onClick={() => setToggle(!toggle)}>
-                    <BsChatLeftText className="text-cyan-700"/>
+                    <BsChatLeftText className="text-stone-100"/>
                 </li>
                 {toggle && (
-                    <ul className="w-full flex items-center justify-center bg-neutral-600">
-                        <li>
-                            {chatrooms.map((chatroom) => (
-                                <div key={chatroom.id} className="flex flex-col justify-center items-center" onClick={() => setMyState(chatroom.id)}>
-                                    <span>{chatroom.name}</span>
-                                </div>
-                            ))}
-                        </li>
+                    <ul className="w-full flex flex-col items-center box-border">
+                        {chatrooms.map((chatroom) => (
+                            <li key={chatroom.id} className="w-[80%] my-2 p-2 rounded-lg bg-stone-700/80 box-border" onClick={() => setMyState(chatroom.id)}>
+                                <span>{chatroom.name}</span>
+                            </li>
+                        ))}
                     </ul>
                 )}
-                <li className="my-4">
-                    <BiSearch className="text-emerald-300"/>
-                </li>
             </ul>
 
         </nav>
