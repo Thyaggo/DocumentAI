@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import { postPrompts } from "../api/api";
 import { LuSendHorizonal } from "react-icons/lu";
 import { MyContext } from "../Context";
-import { getPromt } from "../api/api";
-import { getRespond } from "../api/api";
+import { getPromt, getRespond, postPrompts, postResponses } from "../api/api";
 
 export function Pdfchat() {
     const textAreaRef = useRef(null);
@@ -31,6 +29,8 @@ export function Pdfchat() {
             created_at: new Date().toLocaleTimeString(),
         };
 
+        postPrompts(newPromt);
+        postResponses(newResponse);
         setPromtList([...promtList, newPromt]);
         setResponseList([...responseList, newResponse]);
         setPromt("");
@@ -47,6 +47,7 @@ export function Pdfchat() {
             getPromt(myState)
                 .then(response => {
                     // Verificar si response.data no es undefined y tiene una longitud mayor que cero
+                    console.log(response);  
                     if (response !== undefined && response.length !== 0) {
                         setPromtList(response);
                     }
@@ -57,6 +58,7 @@ export function Pdfchat() {
             getRespond(myState)
                 .then(response => {
                     // Verificar si response.data no es undefined y tiene una longitud mayor que cero
+                    console.log(response);
                     if (response !== undefined && response.length !== 0) {
                         setResponseList(response);
                     }
@@ -66,7 +68,6 @@ export function Pdfchat() {
                 });
         }
     }, [myState]);
-    
 
     return (
         <div className="bg-stone-800 w-full max-w-[55%] h-screen box-border flex flex-col">
@@ -81,7 +82,7 @@ export function Pdfchat() {
                                 </small>
                             </div>
                         </div>
-                        <div key={responseList[index]+1} className="max-w-[75%] self-start mx-5 my-2 overflow-x-auto scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-md">
+                        <div className="max-w-[75%] self-start mx-5 my-2 overflow-x-auto scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-md">
                             <div className="w-fit bg-stone-700 rounded-md px-2 py-1 my-1">
                                 <p>{responseList[index].response}</p>
                                 <small className="text-[0.6rem] opacity-50">

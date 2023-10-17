@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import viewsets, status
 from .models import ChatRooms, Promts, Responses
 from .serializer import ChatRoomsSerializer, PromtsSerializer, ResponsesSerializer
+from rest_framework import permissions
 
 class ChatRoomsView(viewsets.ModelViewSet):
     queryset = ChatRooms.objects.all()
@@ -10,6 +11,7 @@ class ChatRoomsView(viewsets.ModelViewSet):
 
 class PromtsView(viewsets.ModelViewSet):
     queryset = Promts.objects.all()
+    serializer_class = PromtsSerializer
 
     def list(self, request):
         # Obtener el chat_id de la solicitud GET
@@ -32,6 +34,7 @@ class PromtsView(viewsets.ModelViewSet):
 
 class ResponsesView(viewsets.ModelViewSet):
     queryset = Responses.objects.all()
+    serializer_class = ResponsesSerializer
     
     def list(self, request):
         # Obtener el chat_id de la solicitud GET

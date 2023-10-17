@@ -46,7 +46,7 @@ INSTALLED_APPS = [
 
     # Local apps
     'doc_processing.apps.DocProcessingConfig',
-    'account.apps.AccountConfig',
+    #'account.apps.AccountConfig',
     'server.apps.ServerConfig'
 
 ]
@@ -140,21 +140,21 @@ MEDIA_ROOT = BASE_DIR / 'static/pdf'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+#DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
 ]
 
-AUTH_USER_MODEL = 'account.Account'
+#AUTH_USER_MODEL = 'account.Account'
 
-REST_FRAMEWORK = {
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema', 
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
-    ],  
-}
+# REST_FRAMEWORK = {
+#     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema', 
+#     'DEFAULT_PERMISSION_CLASSES': [
+#         'rest_framework.permissions.AllowAny', 'rest_framework.permissions.IsAuthenticated'
+#     ],  
+# }
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Your Project API',

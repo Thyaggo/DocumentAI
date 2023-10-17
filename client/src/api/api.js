@@ -68,7 +68,17 @@ export const getRespond = async (id) => {
 //post the promts to the backend
 export const postPrompts = (data) => {
     try {
-        const response = api.post('servers/prompts/', data);
+        const response = api.post('server/promts/', data);
+        return response.data;
+    } catch (error) {
+        console.error("Axios Error:", error);
+        throw error;
+    }
+}
+
+export const postResponses = (data) => {
+    try {
+        const response = api.post('server/responses/', data);
         return response.data;
     } catch (error) {
         console.error("Axios Error:", error);
