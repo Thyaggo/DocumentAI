@@ -1,12 +1,15 @@
-import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import {BrowserRouter, Route, Routes, redirect} from 'react-router-dom';
+import { useContext } from 'react';
 import {FilePage} from './pages/File.jsx';
 import LoginPage from './pages/Login.jsx';
 
 function App() {
+  const { tokenAuth } = useContext(MyContext);
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<FilePage />} />
+        {tokenAuth ? (<Route path="/" element={<FilePage />} />) : (redirect('/login'))}
         <Route path="/login" element={<LoginPage />} />
       </Routes>
     </BrowserRouter>

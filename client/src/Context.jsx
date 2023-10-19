@@ -7,14 +7,18 @@ export const MyContext = createContext();
 export const MyProvider = ({ children }) => {
     // Set up state
     const [myState, setMyState] = useState();
-
-    // Define any functions you want to pass down to consumers
+    const [tokenAuth, setTokenAuth] = useState("");
+    const [user, setUser] = useState("");
     
     // Return the provider with the context value and children
     return (
         <MyContext.Provider value={{
+            myState,
             setMyState,
-            myState
+            tokenAuth,
+            setTokenAuth,
+            user,
+            setUser,
         }}>
             {children}
         </MyContext.Provider>

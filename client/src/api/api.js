@@ -31,8 +31,12 @@ export const postPDF = (data) => {
     }
 }
 
-export const getChatrooms = async () => {
-    const response = await api.get('/server/chatrooms');
+export const getChatrooms = async (token) => {
+    const response = await api.get('/server/chatrooms', {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
     return response;
 }
 
@@ -80,6 +84,16 @@ export const postResponses = (data) => {
     try {
         const response = api.post('server/responses/', data);
         return response.data;
+    } catch (error) {
+        console.error("Axios Error:", error);
+        throw error;
+    }
+}
+
+export const loginUser = (data) => {
+    try {
+        const response = api.post('account/token/', data,);
+        return response;
     } catch (error) {
         console.error("Axios Error:", error);
         throw error;
