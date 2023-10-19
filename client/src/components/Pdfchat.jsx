@@ -6,8 +6,8 @@ import { getPromt, getRespond, postPrompts, postResponses } from "../api/api";
 export function Pdfchat() {
     const textAreaRef = useRef(null);
     const [promt, setPromt] = useState("");
-    const [promtList, setPromtList] = useState([]);
     const [responseList, setResponseList] = useState([]);
+    const [promtList, setPromtList] = useState([]);
     const {myState} = React.useContext(MyContext);
 
     function onSubmit(e) {
@@ -41,9 +41,24 @@ export function Pdfchat() {
         textAreaRef.current.style.height = textAreaRef.current.scrollHeight + "px";
     }, [promt]);
 
-
     useEffect(() => {
         if (myState !== undefined) {
+            getRespond(myState)
+            .then(response => {
+                // Verificar si response.data no es undefined y tiene una longitud mayor que cero
+                console.log(response);  
+                if (response !== undefined && response.length !== 0) {
+                    setResponseList(response);
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        }
+    },[myState]);
+
+    useEffect(() => {
+        if (myState !== undefined){
             getPromt(myState)
                 .then(response => {
                     // Verificar si response.data no es undefined y tiene una longitud mayor que cero
@@ -55,43 +70,35 @@ export function Pdfchat() {
                 .catch(error => {
                     console.error(error);
                 });
-            getRespond(myState)
-                .then(response => {
-                    // Verificar si response.data no es undefined y tiene una longitud mayor que cero
-                    console.log(response);
-                    if (response !== undefined && response.length !== 0) {
-                        setResponseList(response);
-                    }
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        }
+            }
     }, [myState]);
+    
 
     return (
         <div className="bg-stone-800 w-full max-w-[55%] h-screen box-border flex flex-col">
             <section className=" h-[90vh]  overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-md">
-                <main className="flex flex-col">
                     {promtList.map((promt, index) => (
-                        <><div key={index} className="max-w-[75%] self-end mx-5 my-2 overflow-x-auto scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-md">
-                            <div className="w-fit bg-stone-700 rounded-md px-2 py-1 my-1">
-                                <p>{promt.promt}</p>
-                                <small className="text-[0.6rem] opacity-50">
-                                    {promt.created_at}
-                                </small>
+                        <div key={index} className="flex flex-col">
+                            <div className="max-w-[75%] self-end mx-5 my-2 overflow-x-auto scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-md">
+                                <div className="w-fit bg-stone-700 rounded-md px-2 py-1 my-1">
+                                    <p>{promt.promt}</p>
+                                    <small className="text-[0.6rem] opacity-50">
+                                        {promt.created_at}
+                                    </small>
+                                </div>
                             </div>
+                            {index < responseList.length && (
+                                <div className="max-w-[75%] self-start mx-5 my-2 overflow-x-auto scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-md">
+                                    <div className="w-fit bg-stone-700 rounded-md px-2 py-1 my-1">
+                                        <p>{responseList[index].response}</p>
+                                        <small className="text-[0.6rem] opacity-50">
+                                            {responseList[index].created_at}
+                                        </small>
+                                    </div>
+                                </div>
+                            )}
                         </div>
-                        <div className="max-w-[75%] self-start mx-5 my-2 overflow-x-auto scrollbar-thin scrollbar-thumb-zinc-600 scrollbar-thumb-rounded-md">
-                            <div className="w-fit bg-stone-700 rounded-md px-2 py-1 my-1">
-                                <p>{responseList[index].response}</p>
-                                <small className="text-[0.6rem] opacity-50">
-                                    {responseList[index].created_at}
-                                </small>
-                            </div>
-                        </div></>
                     ))}
-                </main>
             </section>
             <section className="flex items-center justify-center box-border">
                 <form

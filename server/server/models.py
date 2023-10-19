@@ -1,9 +1,9 @@
 from django.db import models
-from django.conf import settings
+from django.contrib.auth.models import User
 
 class ChatRooms(models.Model):
     name = models.CharField(max_length=100)
-    #owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='chatroom_owner')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='chatroom_owner')
     created_at = models.DateTimeField(auto_now_add=True)
 
 class Promts(models.Model):
