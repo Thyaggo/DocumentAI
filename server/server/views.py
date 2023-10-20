@@ -1,9 +1,7 @@
-from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework import viewsets, status
 from .models import ChatRooms, Promts, Responses
 from .serializer import ChatRoomsSerializer, PromtsSerializer, ResponsesSerializer
-from rest_framework import permissions
 
 class ChatRoomsView(viewsets.ModelViewSet):
     queryset = ChatRooms.objects.all()

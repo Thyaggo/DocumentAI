@@ -1,20 +1,18 @@
 import React from 'react';
 import { loginUser } from '../api/api';
 import { useNavigate } from 'react-router-dom';
+import jwt_decode from "jwt-decode";
 
 function LoginPage() {
-
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(e.target.username.value);
-    console.log(e.target.password.value);
     loginUser({username: e.target.username.value, password: e.target.password.value})
       .then((res) => {
-        console.log(res.data);
         localStorage.setItem('token', JSON.stringify(res.data));
         navigate('/');
+        console.log(jwt_decode(res.data.access));
       }).catch((err) => {
         console.log(err);
       });

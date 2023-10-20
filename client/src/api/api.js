@@ -1,6 +1,7 @@
 import axios from 'axios';
 const token = JSON.parse(localStorage.getItem('token')).access;
 
+
 const api = axios.create({
     baseURL: 'http://localhost:8000',
     headers: {
@@ -93,6 +94,16 @@ export const postResponses = (data) => {
 export const loginUser = (data) => {
     try {
         const response = api.post('account/token/', data);
+        return response;
+    } catch (error) {
+        console.error("Axios Error:", error);
+        throw error;
+    }
+}
+
+export const updateToken = (refreshToken) => {
+    try {
+        const response = api.post('account/token/refresh/',{refresh:refreshToken});
         return response;
     } catch (error) {
         console.error("Axios Error:", error);
