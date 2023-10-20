@@ -1,7 +1,11 @@
 import axios from 'axios';
+const token = JSON.parse(localStorage.getItem('token')).access;
 
 const api = axios.create({
     baseURL: 'http://localhost:8000',
+    headers: {
+        'Authorization': `Bearer ${token}`,
+    }
 });
 
 export const getPDF = async (id) => {
@@ -80,6 +84,16 @@ export const postResponses = (data) => {
     try {
         const response = api.post('server/responses/', data);
         return response.data;
+    } catch (error) {
+        console.error("Axios Error:", error);
+        throw error;
+    }
+}
+
+export const loginUser = (data) => {
+    try {
+        const response = api.post('account/token/', data);
+        return response;
     } catch (error) {
         console.error("Axios Error:", error);
         throw error;

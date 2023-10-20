@@ -1,24 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { loginUser } from '../api/api';
+import { useNavigate } from 'react-router-dom';
 
 function LoginPage() {
-  const [user, setUser] = useState({
-    email: '',
-    password: '',
-  });
 
-  const handleEmailChange = (e) => {
-    setUser({...user, email: e.target.value});
-  };
-
-  const handlePasswordChange = (e) => {
-    setUser({...user, password: e.target.value});
-  };
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Aquí puedes realizar la lógica de autenticación o enviar los datos a un servidor si es necesario.
-    console.log('Email:', user.email);
-    console.log('Password:', user.password);
+    console.log(e.target.username.value);
+    console.log(e.target.password.value);
+    loginUser({username: e.target.username.value, password: e.target.password.value})
+      .then((res) => {
+        console.log(res.data);
+        localStorage.setItem('token', JSON.stringify(res.data));
+        navigate('/');
+      }).catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -34,44 +33,26 @@ function LoginPage() {
             <div className="divide-y divide-gray-200">
               <div className="py-8 text-base leading-6 space-y-4  sm:text-lg sm:leading-7">
                 <form onSubmit={handleSubmit}>
-                  <div className="relative border-2 rounded-md my-2 border-gray-300">
+                  <div className="relative border-2 rounded-md my-2 px-2 border-gray-300">
                     <input
-                      autoComplete="off"
-                      id="email"
-                      name="email"
+                      autoComplete='off'
+                      id="username"
                       type="text"
-                      className="bg-transparent peer placeholder-transparent h-10 w-full  focus:outline-none focus:border-rose-600"
-                      placeholder="Email address"
-                      value={user.email}
-                      onChange={handleEmailChange}
+                      className="bg-transparent peer placeholder-stone-500 h-10 w-full  focus:outline-none focus:border-rose-600"
+                      placeholder="Username"
                     />
-                    <label
-                      htmlFor="email"
-                      className="absolute left-0 -top-3.5  text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-white peer-focus:text-sm"
-                    >
-                      Email Address
-                    </label>
                   </div>
-                  <div className="relative">
+                  <div className="relative border-2 rounded-md my-2 px-2 border-gray-300">
                     <input
-                      autoComplete="off"
+                      autoComplete='off'
                       id="password"
-                      name="password"
                       type="password"
-                      className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-rose-600"
+                      className="bg-transparent peer placeholder-stone-500 h-10 w-full  focus:outline-none focus:border-rose-600"
                       placeholder="Password"
-                      value={user.password}
-                      onChange={handlePasswordChange}
                     />
-                    <label
-                      htmlFor="password"
-                      className="absolute left-0 -top-3.5  text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
-                    >
-                      Password
-                    </label>
                   </div>
                   <div className="relative">
-                    <button type="submit" className="bg-blue-500 text-white rounded-md px-2 py-1">Submit</button>
+                    <button type="submit" className="bg-stone-100 text-black rounded-md px-2 py-1">Submit</button>
                   </div>
                 </form>
               </div>
