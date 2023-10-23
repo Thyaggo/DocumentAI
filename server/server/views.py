@@ -1,15 +1,18 @@
 from rest_framework.response import Response
 from rest_framework import viewsets, status
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from .models import ChatRooms, Promts, Responses
 from .serializer import ChatRoomsSerializer, PromtsSerializer, ResponsesSerializer
 
 class ChatRoomsView(viewsets.ModelViewSet):
     queryset = ChatRooms.objects.all()
     serializer_class = ChatRoomsSerializer
+    authentication_classes = [JWTAuthentication]
 
 class PromtsView(viewsets.ModelViewSet):
     queryset = Promts.objects.all()
     serializer_class = PromtsSerializer
+    authentication_classes = [JWTAuthentication]
 
     def list(self, request):
         # Obtener el chat_id de la solicitud GET
@@ -33,6 +36,7 @@ class PromtsView(viewsets.ModelViewSet):
 class ResponsesView(viewsets.ModelViewSet):
     queryset = Responses.objects.all()
     serializer_class = ResponsesSerializer
+    authentication_classes = [JWTAuthentication]
     
     def list(self, request):
         # Obtener el chat_id de la solicitud GET

@@ -6,14 +6,17 @@ export const MyContext = createContext();
 
 // Create a provider component
 export const MyProvider = ({ children }) => {
-    const token = JSON.parse(localStorage.getItem('token')).refresh;
+    let token = JSON.parse(localStorage.getItem('token'));
+    if(token){
+        token = token.refresh;
+    }
     const [myState, setMyState] = useState();
+    const [login, setLogin] = useState(false);
     // Return the provider with the context value and children
 
     if(token){
         (() => {
             let interval = setInterval(() => {
-                console.log(token);
                 updateToken(token)
                 .then((res) => {
                     localStorage.setItem('token', JSON.stringify(res.data));
@@ -25,10 +28,18 @@ export const MyProvider = ({ children }) => {
         })();
     }
 
+    const Logout = () => {
+        localStorage.removeItem('token');
+        window.location.reload();
+        setLogin(false);
+    }
+
     return (
         <MyContext.Provider value={{
             setMyState,
             myState,
+            login,
+            setLogin,
         }}>
             {children}
         </MyContext.Provider>

@@ -2,9 +2,11 @@ import React from 'react';
 import { loginUser } from '../api/api';
 import { useNavigate } from 'react-router-dom';
 import jwt_decode from "jwt-decode";
+import { MyContext } from '../Context';
 
 function LoginPage() {
   const navigate = useNavigate();
+  const {setLogin} = React.useContext(MyContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -12,7 +14,7 @@ function LoginPage() {
       .then((res) => {
         localStorage.setItem('token', JSON.stringify(res.data));
         navigate('/');
-        console.log(jwt_decode(res.data.access));
+        setLogin(true);
       }).catch((err) => {
         console.log(err);
       });

@@ -1,6 +1,8 @@
 import axios from 'axios';
-const token = JSON.parse(localStorage.getItem('token')).access;
-
+let token = JSON.parse(localStorage.getItem('token'));
+if(token){
+    token = token.access;
+}
 
 const api = axios.create({
     baseURL: 'http://localhost:8000',
