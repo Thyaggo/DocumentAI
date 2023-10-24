@@ -1,14 +1,17 @@
 import React, { useEffect } from "react";
 import { SVGComponent } from "../assets/svglogo";
-import { BsChatLeftText } from "react-icons/bs";
+import { BsChatLeftText, BsChevronDown } from "react-icons/bs";
+import { AiOutlineUser } from "react-icons/ai";
 import { getChatrooms } from "../api/api";
 import { MyContext } from "../Context";
+import { Avatar , Divider } from "@nextui-org/react";
 
 export function NavBar() {
     const [toggle, setToggle] = React.useState(false);
+    const [open, setOpen] = React.useState(false);
     const [chatrooms, setChatrooms] = React.useState([]);
 
-    const {setMyState} = React.useContext(MyContext);
+    const {setMyState, Logout} = React.useContext(MyContext);
 
     //const [updateState] = React.useContext(MyContext);
 
@@ -27,27 +30,36 @@ export function NavBar() {
 
     return (
         
-        <nav className={`flex flex-col divide-y-2 box-border w-fit divide-stone-700/40 bg-gradient-to-t from-stone-700`}>
+        <nav className={`dark flex flex-col  box-border ${open ? "w-[30%]" : "w-fit"}  bg-gradient-to-t from-stone-900`}>
             <div className="flex items-center justify-center m-6 ">
-                <SVGComponent className="w-10 h-10" />
+                <SVGComponent className="w-10 h-10" onClick={() => setOpen(!open)}/>
             </div>
-
-            <ul className={`flex flex-col justify-center items-center box-border`}>
-                <li className="p-5 flex items-center gap-4" onClick={() => setToggle(!toggle)}>
-                    <BsChatLeftText className="text-stone-100"/>
-                    <span className={`${toggle ? "" : "hidden"}`}>Chatroom</span>
+            <Divider className="my-4"/> 
+            <ul className={`flex flex-col justify-center ${open ? "items-start" : "items-center"} box-border`}>
+                <li className={`w-full p-4 flex items-center  ${open ? "justify-start" : "justify-center"} gap-4`}>
+                    <BsChatLeftText className="text-emerald-200 shadow-lg shadow-emerald-900/50"/>
+                    <span className={`${open ? "" : "hidden"} font-semibold`}>Chatroom</span>
+                    <BsChevronDown className={`ml-auto transform ${toggle ? "rotate-180" : ""} ${open ? "" : "hidden"} transition-transform duration-300 cursor-pointer`} onClick={() => setToggle(!toggle)}/>
                 </li>
-                {toggle && (
+                {open && (
                     <ul className="w-full flex flex-col items-center box-border">
                         {chatrooms.map((chatroom) => (
-                            <li key={chatroom.id} className="w-[80%] my-2 p-2 rounded-lg bg-stone-700/80 box-border hover:bg-stone-700/60" onClick={() => setMyState(chatroom.id)}>
-                                <span>{chatroom.name}</span>
+                            <li key={chatroom.id} className="w-[90%] my-1 p-2 rounded-lg bg-stone-700/20 box-border hover:bg-stone-700/60" onClick={() => setMyState(chatroom.id)}>
+                                <span className="text-sm opacity-80">{chatroom.name}</span>
                             </li>
                         ))}
                     </ul>
                 )}
             </ul>
-
+            <div className="mt-auto flex items-center justify-center p-5">
+                <Avatar
+                    showFallback 
+                    icon={<AiOutlineUser className="text-stone-900 text-lg"/>}
+                    size="md"
+                    onClick={() => Logout()}
+                    classNames={{base: "bg-emerald-400 cursor-pointer hover:opacity-30 transition-opacity duration-200"}}
+                />
+            </div>
         </nav>
     );
 }

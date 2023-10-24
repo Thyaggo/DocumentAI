@@ -40,6 +40,7 @@ export const MyProvider = ({ children }) => {
             myState,
             login,
             setLogin,
+            Logout
         }}>
             {children}
         </MyContext.Provider>
