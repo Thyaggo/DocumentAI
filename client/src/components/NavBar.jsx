@@ -30,7 +30,7 @@ export function NavBar() {
 
     return (
         
-        <nav className={`dark flex flex-col  box-border ${open ? "w-[30%]" : "w-fit"}  bg-gradient-to-t from-stone-900`}>
+        <nav className={`dark flex flex-col ${open ? "w-[30%]" : "w-fit"} h-screen  bg-gradient-to-t from-stone-900 transition-width duration-500 relative`}>
             <div className="flex items-center justify-center m-6 ">
                 <SVGComponent className="w-10 h-10" onClick={() => setOpen(!open)}/>
             </div>
@@ -41,10 +41,10 @@ export function NavBar() {
                     <span className={`${open ? "" : "hidden"} font-semibold`}>Chatroom</span>
                     <BsChevronDown className={`ml-auto transform ${toggle ? "rotate-180" : ""} ${open ? "" : "hidden"} transition-transform duration-300 cursor-pointer`} onClick={() => setToggle(!toggle)}/>
                 </li>
-                {open && (
+                {toggle && open && (
                     <ul className="w-full flex flex-col items-center box-border">
                         {chatrooms.map((chatroom) => (
-                            <li key={chatroom.id} className="w-[90%] my-1 p-2 rounded-lg bg-stone-700/20 box-border hover:bg-stone-700/60" onClick={() => setMyState(chatroom.id)}>
+                            <li key={chatroom.id} className="w-[90%] my-1 p-2 rounded-lg bg-emerald-700/10 box-border hover:bg-emerald-700/40" onClick={() => setMyState(chatroom.id)}>
                                 <span className="text-sm opacity-80">{chatroom.name}</span>
                             </li>
                         ))}

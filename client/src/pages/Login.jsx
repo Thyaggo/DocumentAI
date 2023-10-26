@@ -1,4 +1,5 @@
 import React from 'react';
+import {Card, CardHeader, CardBody, CardFooter, Divider, Input, Button, Link} from "@nextui-org/react";
 import { loginUser } from '../api/api';
 import { useNavigate } from 'react-router-dom';
 import jwt_decode from "jwt-decode";
@@ -6,61 +7,55 @@ import { MyContext } from '../Context';
 
 function LoginPage() {
   const navigate = useNavigate();
-  const {setLogin} = React.useContext(MyContext);
+  const {setToken} = React.useContext(MyContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     loginUser({username: e.target.username.value, password: e.target.password.value})
       .then((res) => {
+        setToken({access: res.data.access, refresh: res.data.refresh});
         localStorage.setItem('token', JSON.stringify(res.data));
         navigate('/');
-        setLogin(true);
       }).catch((err) => {
         console.log(err);
       });
   };
 
   return (
-    <div className="min-h-screen bg-stone-800 py-6 flex flex-col justify-center sm:py-12 text-white">
-      <div className="relative py-3 sm:max-w-xl sm:mx-auto">
-        <div className="absolute inset-0 bg-gradient-to-r from-stone-300 to-stone-600 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl">
-        </div>
-        <div className="relative px-4 py-10 bg-stone-700 shadow-lg sm:rounded-3xl sm:p-20">
-          <div className="max-w-md mx-auto">
-            <div>
-              <h1 className="text-2xl font-semibold">Login Form with Floating Labels</h1>
-            </div>
-            <div className="divide-y divide-gray-200">
-              <div className="py-8 text-base leading-6 space-y-4  sm:text-lg sm:leading-7">
-                <form onSubmit={handleSubmit}>
-                  <div className="relative border-2 rounded-md my-2 px-2 border-gray-300">
-                    <input
-                      autoComplete='off'
-                      id="username"
-                      type="text"
-                      className="bg-transparent peer placeholder-stone-500 h-10 w-full  focus:outline-none focus:border-rose-600"
-                      placeholder="Username"
-                    />
-                  </div>
-                  <div className="relative border-2 rounded-md my-2 px-2 border-gray-300">
-                    <input
-                      autoComplete='off'
-                      id="password"
-                      type="password"
-                      className="bg-transparent peer placeholder-stone-500 h-10 w-full  focus:outline-none focus:border-rose-600"
-                      placeholder="Password"
-                    />
-                  </div>
-                  <div className="relative">
-                    <button type="submit" className="bg-stone-100 text-black rounded-md px-2 py-1">Submit</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <main className='dark bg-zinc-800 h-screen flex items-center justify-center'>
+      <Card className='w-96 max-w-[500px] p-2'>
+        <CardHeader className="flex gap-3 flex-col items-start ">
+          <h1 className="font-bold text-3xl">Login</h1>
+          <small className="opacity-50">Enter your credentials below to login</small>
+        </CardHeader>
+        <Divider />
+        <CardBody>
+          <form onSubmit={handleSubmit} className="grid gap-4">
+            <Input
+              type="text"
+              label="Username"
+              labelPlacement= 'outside'
+              placeholder="Enter your username"
+              autoComplete="off"
+              id="username"
+            />
+            <Input
+              type="password"
+              label="Password"
+              labelPlacement= 'outside'
+              placeholder="Enter your password"
+              autoComplete="off"
+              id="password"
+            />
+            <Button type="submit">Login</Button>
+          </form>
+        </CardBody>
+        <Divider/>
+        <CardFooter>
+          <p>Don't have an account? <Link href="/signup" className='text-emerald-500'>Sign up</Link></p>
+        </CardFooter>
+      </Card>
+    </main>
   );
 }
 

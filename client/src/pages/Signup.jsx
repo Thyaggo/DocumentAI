@@ -1,5 +1,5 @@
 import React from "react";
-import {Card, CardHeader, CardBody, CardFooter, Divider, Input,} from "@nextui-org/react";
+import {Card, CardHeader, CardBody, CardFooter, Divider, Input, Link} from "@nextui-org/react";
 
 export default function Signup() {
   return (
@@ -44,7 +44,7 @@ export default function Signup() {
             </CardBody>
             <Divider/>
             <CardFooter>
-                <p>Already have an account?</p>
+                <p>Already have an account? <Link href="/login" className='text-emerald-500'> Login</Link></p> 
             </CardFooter>
         </Card>
     </main>
