@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'corsheaders', # CORS
     'drf_spectacular', # OpenAPI
     'rest_framework_simplejwt', # JWT
+    'djoser', # Authentication
 
     # Local apps
     'doc_processing.apps.DocProcessingConfig',
@@ -149,7 +150,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5173",
 ]
 
-#AUTH_USER_MODEL = 'account.Account'
+AUTH_USER_MODEL = 'account.Account'
 
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema', 
