@@ -8,6 +8,7 @@ export default function Signup() {
         last_name: '',
         email: '',
         password: '',
+        re_password: '',
     });
     
     const handleSubmit = (e) => {
@@ -63,9 +64,18 @@ export default function Signup() {
                         autoComplete="off"
                         onChange={(e) => setRegister({...register, password: e.target.value})}
                     />
+                    <Input
+                        type="password"
+                        label="Confirm Password"
+                        labelPlacement= 'outside'
+                        placeholder="Confirm your password"
+                        className="col-span-2"
+                        autoComplete="off"
+                        onChange={(e) => setRegister({...register, re_password: e.target.value})}
+                    />
                 </CardBody>
                 <Divider/>
-                <CardFooter>
+                <CardFooter className="flex justify-between">
                     <Button type="submit" onClick={handleSubmit}>Sign up</Button>
                     <p>Already have an account? <Link href="/login" className='text-emerald-500'> Login</Link></p> 
                 </CardFooter>

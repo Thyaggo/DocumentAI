@@ -115,7 +115,14 @@ export const updateToken = (refreshToken) => {
 
 export const registerUser = (data) => {
     try {
-        const response = api.post('auth/users/', data);
+        const customHeaders = {
+            ...api.defaults.headers, // Copia los encabezados predeterminados
+            'Authorization': undefined // Elimina la autorización de los encabezados
+        };
+
+        const response = axios.post('http://localhost:8000/auth/users/', data, {
+            headers: customHeaders
+        });
         return response;
     } catch (error) {
         console.error("Axios Error:", error);
