@@ -95,7 +95,7 @@ export const postResponses = (data) => {
 
 export const loginUser = (data) => {
     try {
-        const response = api.post('account/token/', data);
+        const response = api.post('auth/jwt/create/', data);
         return response;
     } catch (error) {
         console.error("Axios Error:", error);
@@ -105,7 +105,17 @@ export const loginUser = (data) => {
 
 export const updateToken = (refreshToken) => {
     try {
-        const response = api.post('account/token/refresh/',{refresh:refreshToken});
+        const response = api.post('auth/jwt/refresh/',{refresh:refreshToken});
+        return response;
+    } catch (error) {
+        console.error("Axios Error:", error);
+        throw error;
+    }
+}
+
+export const registerUser = (data) => {
+    try {
+        const response = api.post('auth/users/', data);
         return response;
     } catch (error) {
         console.error("Axios Error:", error);

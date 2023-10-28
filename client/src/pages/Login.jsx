@@ -11,7 +11,7 @@ function LoginPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    loginUser({username: e.target.username.value, password: e.target.password.value})
+    loginUser({email: e.target.email.value, password: e.target.password.value})
       .then((res) => {
         setToken({access: res.data.access, refresh: res.data.refresh});
         localStorage.setItem('token', JSON.stringify(res.data));
@@ -32,12 +32,12 @@ function LoginPage() {
         <CardBody>
           <form onSubmit={handleSubmit} className="grid gap-4">
             <Input
-              type="text"
-              label="Username"
+              type="email"
+              label="Email"
               labelPlacement= 'outside'
-              placeholder="Enter your username"
+              placeholder="Enter your email"
               autoComplete="off"
-              id="username"
+              id="email"
             />
             <Input
               type="password"
