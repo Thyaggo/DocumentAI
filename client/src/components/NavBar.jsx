@@ -1,24 +1,25 @@
 import React, { useEffect } from "react";
 import { SVGComponent } from "../assets/svglogo";
-import { BsChatLeftText, BsChevronDown } from "react-icons/bs";
-import { AiOutlineUser } from "react-icons/ai";
-import { getChatrooms } from "../api/api";
+import { BsChatLeftText, BsChevronDown, BsCheckLg } from "react-icons/bs";
+import { AiOutlineUser, AiOutlineEdit, AiOutlineDelete, AiOutlineClose } from "react-icons/ai";
+import { getChatrooms, postChatroom } from "../api/api";
 import { MyContext } from "../Context";
 import { Avatar , Divider } from "@nextui-org/react";
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button} from "@nextui-org/react";
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Modal, ModalContent, ModalHeader,ModalBody, ModalFooter,Input, useDisclosure} from "@nextui-org/react";
 
 
 export function NavBar() {
     const [toggle, setToggle] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const [chatrooms, setChatrooms] = React.useState([]);
-
-    const {setMyState, Logout, user} = React.useContext(MyContext);
+    const [chatroom, setChatroom] = React.useState();
+    const {setChatid, Logout} = React.useContext(MyContext);
+    const {isOpen, onOpen, onOpenChange} = useDisclosure();
+    const [isEditing, setIsEditing] = React.useState(false);
 
     //const [updateState] = React.useContext(MyContext);
 
     useEffect(() => {
-        console.log(user);
         // Aquí dentro, realizas la solicitud HTTP utilizando Axios o cualquier otra biblioteca que prefieras
         getChatrooms()
           .then(response => {
@@ -31,27 +32,74 @@ export function NavBar() {
           });
       }, []);
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        const newChatroom = {
+            name: chatroom,
+            created_at: new Date().toLocaleTimeString(),
+        };
+
+        postChatroom(newChatroom)
+        .then((res) => {
+            localStorage.setItem('chatid', JSON.stringify(res.data));
+            setChatrooms([...chatrooms, newChatroom]);
+        }).catch((err) => {
+            console.log(err);
+        });
+    }
+
     return (
         
-        <nav className={`dark flex flex-col ${open ? "w-[30%]" : "w-fit"} h-screen  bg-gradient-to-t from-stone-900 transition-width duration-500 relative`}>
+        <nav className={`dark flex flex-col ${open ? "w-[30%]" : "w-[8%]"} h-screen  bg-gradient-to-t from-stone-900 transition-width duration-200`}>
             <div className="flex items-center justify-center m-6 ">
                 <SVGComponent className="w-10 h-10" onClick={() => setOpen(!open)}/>
             </div>
             <Divider className="my-4"/> 
-            <ul className={`flex flex-col justify-center ${open ? "items-start" : "items-center"} box-border`}>
-                <li className={`w-full p-4 flex items-center  ${open ? "justify-start" : "justify-center"} gap-4`}>
-                    <BsChatLeftText className="text-emerald-200 shadow-lg shadow-emerald-900/50"/>
-                    <span className={`${open ? "" : "hidden"} font-semibold`}>Chatroom</span>
-                    <BsChevronDown className={`ml-auto transform ${toggle ? "rotate-180" : ""} ${open ? "" : "hidden"} transition-transform duration-300 cursor-pointer`} onClick={() => setToggle(!toggle)}/>
+            <ul className={`flex flex-col justify-center ${open ? 'items-start' : 'items-center'} box-border`}>
+                <li className={`w-full p-4 flex items-center ${open ? 'justify-start' : 'justify-center'} gap-4 animate-fadeUpDown`}>
+                    <BsChatLeftText className="text-emerald-200 shadow-lg shadow-emerald-900/50" />
+                    <span className={`${open ? '' : 'hidden'} font-semibold`}>Chatroom</span>
+                    <BsChevronDown
+                        className={`ml-auto transform ${toggle ? 'rotate-180' : ''} ${open ? '' : 'hidden'} transition-transform duration-300 cursor-pointer`}
+                        onClick={() => setToggle(!toggle)}
+                    />
                 </li>
                 {toggle && open && (
                     <ul className="w-full flex flex-col items-center box-border">
-                        <Button className="w-[90%] my-1 p-2 rounded-lg bg-neutral-700/20 box-border hover:bg-emerald-700/40">
+                        <Button onPress={onOpen} className="w-[90%] my-1 p-2 rounded-lg bg-neutral-700/20 box-border hover:bg-neutral-700/40">
                             <span className="text-ellipsis overflow-hidden break-all text-base">New Chat</span>
                         </Button>
+                        <Modal isOpen={isOpen} onOpenChange={onOpenChange} className="dark text-white">
+                            <ModalContent>
+                            {(onClose) => (
+                                <><ModalHeader>Create Chatroom</ModalHeader>
+                                <ModalBody>
+                                    <Input placeholder="Chatroom Name" onChange={(e) => setChatroom(e.target.value)} />
+                                </ModalBody>
+                                <ModalFooter>
+                                    <Button auto className="bg-emerald-400 text-black" onClick={handleSubmit} onPress={onClose}>Create</Button>
+                                </ModalFooter></>
+                              )}
+                            </ModalContent>
+                        </Modal>
+                        <Divider className="w-[90%] opacity-50 my-2" />
                         {chatrooms.map((chatroom) => (
-                            <li key={chatroom.id} className="w-[90%] my-1 p-2 rounded-lg bg-emerald-700/10 box-border hover:bg-emerald-700/40" onClick={() => setMyState(chatroom.id)}>
-                                <span className="text-ellipsis overflow-hidden break-all text-sm opacity-80">{chatroom.name}</span>
+                            <li key={chatroom.id} className="flex justify-between w-[90%] my-1 p-2 rounded-lg bg-emerald-700/10 box-border hover:bg-emerald-700/40 animate-fadeUpDown" onClick={() => setChatid(chatroom.id)}>
+                                {isEditing ? (
+                                        <><input onChange={(e) => setChatroom(e.target.value)} className="focus-visible:outline-none bg-transparent"/>
+                                        <div className="flex gap-1">
+                                            <BsCheckLg className="text-lg opacity-70" onClick={() => setIsEditing(!isEditing)}/>
+                                            <AiOutlineClose className=" opacity-70" onClick={() => setIsEditing(!isEditing)}/>
+                                        </div>
+                                        </>
+                                   ):(
+                                        <><span className="text-ellipsis overflow-hidden break-all text-sm opacity-80">{chatroom.name}</span>
+                                        <div className="flex gap-1">
+                                            <AiOutlineEdit className="text-lg opacity-70" onClick={() => setIsEditing(!isEditing)}/>
+                                            <AiOutlineDelete className="text-lg opacity-70" />
+                                        </div></> 
+                                )}
                             </li>
                         ))}
                     </ul>

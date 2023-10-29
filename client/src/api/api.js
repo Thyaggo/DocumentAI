@@ -43,6 +43,16 @@ export const getChatrooms = async () => {
     return response;
 }
 
+export const postChatroom = async (data) => {
+    try {
+        const response = await api.post('/server/chatrooms/', data);
+        return response.data;
+    } catch (error) {
+        console.error("Axios Error:", error);
+        throw error;
+    }
+}
+
 export const getPromt = async (id) => {
     try {
         const response = await api.get('/server/promts',{

@@ -8,7 +8,7 @@ export function Pdfchat() {
     const [promt, setPromt] = useState("");
     const [responseList, setResponseList] = useState([]);
     const [promtList, setPromtList] = useState([]);
-    const {myState} = React.useContext(MyContext);
+    const {chatid} = React.useContext(MyContext);
 
     function onSubmit(e) {
         e.preventDefault();
@@ -19,13 +19,13 @@ export function Pdfchat() {
 
         const newPromt = {
             promt: promt,
-            chatroom : myState,
+            chatroom : chatid,
             created_at: new Date().toLocaleTimeString(),
         };
 
         const newResponse = {
             response: 'Hola',
-            chatroom : myState,
+            chatroom : chatid,
             created_at: new Date().toLocaleTimeString(),
         };
 
@@ -42,8 +42,8 @@ export function Pdfchat() {
     }, [promt]);
 
     useEffect(() => {
-        if (myState !== undefined) {
-            getRespond(myState)
+        if (chatid !== undefined) {
+            getRespond(chatid)
             .then(response => {
                 // Verificar si response.data no es undefined y tiene una longitud mayor que cero
                 console.log(response);  
@@ -55,11 +55,11 @@ export function Pdfchat() {
                 console.error(error);
             });
         }
-    },[myState]);
+    },[chatid]);
 
     useEffect(() => {
-        if (myState !== undefined){
-            getPromt(myState)
+        if (chatid !== undefined){
+            getPromt(chatid)
                 .then(response => {
                     // Verificar si response.data no es undefined y tiene una longitud mayor que cero
                     console.log(response);  
@@ -71,7 +71,7 @@ export function Pdfchat() {
                     console.error(error);
                 });
             }
-    }, [myState]);
+    }, [chatid]);
     
 
     return (

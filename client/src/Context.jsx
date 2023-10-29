@@ -11,7 +11,9 @@ export const MyProvider = ({ children }) => {
         access: JSON.parse(localStorage.getItem('token')).access,
         refresh: JSON.parse(localStorage.getItem('token')).refresh,
     } : null);
-    const [myState, setMyState] = useState();
+    const [chatid, setChatid] = useState( localStorage.getItem('chatid') ?
+        JSON.parse(localStorage.getItem('chatid')): undefined
+    );
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState();
     const navigate = useNavigate();
@@ -44,8 +46,8 @@ export const MyProvider = ({ children }) => {
 
     return (
         <MyContext.Provider value={{
-            setMyState,
-            myState,
+            setChatid,
+            chatid,
             Logout,
             token,
             setToken,
