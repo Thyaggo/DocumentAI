@@ -7,13 +7,14 @@ import { MyContext } from '../Context';
 
 function LoginPage() {
   const navigate = useNavigate();
-  const {setToken} = React.useContext(MyContext);
+  const {setToken, setUser} = React.useContext(MyContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     loginUser({email: e.target.email.value, password: e.target.password.value})
       .then((res) => {
         setToken({access: res.data.access, refresh: res.data.refresh});
+        setUser(jwt_decode(res.data.access));
         localStorage.setItem('token', JSON.stringify(res.data));
         navigate('/');
       }).catch((err) => {

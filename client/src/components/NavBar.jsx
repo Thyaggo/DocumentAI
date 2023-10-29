@@ -5,17 +5,20 @@ import { AiOutlineUser } from "react-icons/ai";
 import { getChatrooms } from "../api/api";
 import { MyContext } from "../Context";
 import { Avatar , Divider } from "@nextui-org/react";
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button} from "@nextui-org/react";
+
 
 export function NavBar() {
     const [toggle, setToggle] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const [chatrooms, setChatrooms] = React.useState([]);
 
-    const {setMyState, Logout} = React.useContext(MyContext);
+    const {setMyState, Logout, user} = React.useContext(MyContext);
 
     //const [updateState] = React.useContext(MyContext);
 
     useEffect(() => {
+        console.log(user);
         // Aquí dentro, realizas la solicitud HTTP utilizando Axios o cualquier otra biblioteca que prefieras
         getChatrooms()
           .then(response => {
@@ -43,22 +46,32 @@ export function NavBar() {
                 </li>
                 {toggle && open && (
                     <ul className="w-full flex flex-col items-center box-border">
+                        <Button className="w-[90%] my-1 p-2 rounded-lg bg-neutral-700/20 box-border hover:bg-emerald-700/40">
+                            <span className="text-ellipsis overflow-hidden break-all text-base">New Chat</span>
+                        </Button>
                         {chatrooms.map((chatroom) => (
                             <li key={chatroom.id} className="w-[90%] my-1 p-2 rounded-lg bg-emerald-700/10 box-border hover:bg-emerald-700/40" onClick={() => setMyState(chatroom.id)}>
-                                <span className="text-sm opacity-80">{chatroom.name}</span>
+                                <span className="text-ellipsis overflow-hidden break-all text-sm opacity-80">{chatroom.name}</span>
                             </li>
                         ))}
                     </ul>
                 )}
             </ul>
-            <div className="mt-auto flex items-center justify-center p-5">
-                <Avatar
-                    showFallback 
-                    icon={<AiOutlineUser className="text-stone-900 text-lg"/>}
-                    size="md"
-                    onClick={() => Logout()}
-                    classNames={{base: "bg-emerald-400 cursor-pointer hover:opacity-30 transition-opacity duration-200"}}
-                />
+            <div className="mt-auto flex items-center justify-start p-4 m-2 border-2 rounded-md border-neutral-800 bg-neutral-900">
+                <Dropdown className="dark text-white">
+                    <DropdownTrigger>
+                        <Avatar
+                            showFallback 
+                            icon={<AiOutlineUser className="text-stone-900 text-lg"/>}
+                            size="md"
+                            classNames={{base: "bg-emerald-400 cursor-pointer hover:opacity-30 transition-opacity duration-200"}}
+                        />
+                    </DropdownTrigger>
+                    <DropdownMenu>
+                        <DropdownItem onClick={() => Logout()} className="text-emerald-300">Logout</DropdownItem>
+                    </DropdownMenu>
+                </Dropdown>
+                
             </div>
         </nav>
     );

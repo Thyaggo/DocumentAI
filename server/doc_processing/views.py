@@ -1,5 +1,5 @@
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from .models import Files
 from .serializer import FileSerializer
 
@@ -8,4 +8,5 @@ from .serializer import FileSerializer
 class FileView(ModelViewSet):
     queryset = Files.objects.all()
     serializer_class = FileSerializer
+    authentication_classes = [JWTAuthentication]
 
