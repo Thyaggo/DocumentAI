@@ -1,15 +1,5 @@
-import axios from 'axios';
-let token = JSON.parse(localStorage.getItem('token'));
-if(token){
-    token = token.access;
-}
-
-const api = axios.create({
-    baseURL: 'http://localhost:8000',
-    headers: {
-        'Authorization': `JWT ${token}`,
-    }
-});
+import {AuthAxios} from "./Auth";
+const api = AuthAxios();
 
 export const getPDF = async (id) => {
     try {

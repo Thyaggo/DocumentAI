@@ -15,8 +15,14 @@ export function NavBar() {
     const [chatroom, setChatroom] = React.useState();
     const {setChatid, Logout} = React.useContext(MyContext);
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
-    const [isEditing, setIsEditing] = React.useState(false);
+    const [editingStates, setEditingStates] = React.useState({});
 
+    const handleEditClick = (chatroomId) => {
+        setEditingStates((prevEditingStates) => ({
+        ...prevEditingStates,
+        [chatroomId]: !prevEditingStates[chatroomId],
+        }));
+    };
     //const [updateState] = React.useContext(MyContext);
 
     useEffect(() => {
@@ -86,8 +92,8 @@ export function NavBar() {
                         <Divider className="w-[90%] opacity-50 my-2" />
                         {chatrooms.map((chatroom) => (
                             <li key={chatroom.id} className="flex justify-between w-[90%] my-1 p-2 rounded-lg bg-emerald-700/10 box-border hover:bg-emerald-700/40 animate-fadeUpDown" onClick={() => setChatid(chatroom.id)}>
-                                {isEditing ? (
-                                        <><input onChange={(e) => setChatroom(e.target.value)} className="focus-visible:outline-none bg-transparent"/>
+                                {editingStates[chatroom.id] ? (
+                                        <><input value={chatroom.name} onChange={(e) => setChatroom(e.target.value)} className="focus-visible:outline-none bg-transparent text-sm"/>
                                         <div className="flex gap-1">
                                             <BsCheckLg className="text-lg opacity-70" onClick={() => setIsEditing(!isEditing)}/>
                                             <AiOutlineClose className=" opacity-70" onClick={() => setIsEditing(!isEditing)}/>

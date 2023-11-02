@@ -13,7 +13,7 @@ function LoginPage() {
     e.preventDefault();
     loginUser({email: e.target.email.value, password: e.target.password.value})
       .then((res) => {
-        setToken({access: res.data.access, refresh: res.data.refresh});
+        setToken(res.data);
         setUser(jwt_decode(res.data.access));
         localStorage.setItem('token', JSON.stringify(res.data));
         navigate('/');
