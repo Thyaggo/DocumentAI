@@ -1,6 +1,6 @@
 import React from "react";
 import {Card, CardHeader, CardBody, CardFooter, Divider, Input, Link, Button} from "@nextui-org/react";
-import { registerUser, loginUser } from "../api/api";
+import useAxios from "../api/useAxios";
 
 export default function Signup() {
     const [register, setRegister] = React.useState({
@@ -10,13 +10,15 @@ export default function Signup() {
         password: '',
         re_password: '',
     });
+    const api = useAxios();
     
     const handleSubmit = (e) => {
         e.preventDefault();
-        registerUser(register)
+        api.post(import.meta.env.VITE_ROUTE_REGISTER_USER, register)
             .then((res) => {
                 console.log(res);
-            }).catch((err) => {
+            })
+            .catch((err) => {
                 console.log(err);
             });
     }

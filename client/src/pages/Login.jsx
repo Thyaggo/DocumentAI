@@ -1,6 +1,6 @@
 import React from 'react';
 import {Card, CardHeader, CardBody, CardFooter, Divider, Input, Button, Link} from "@nextui-org/react";
-import { loginUser } from '../api/api';
+import api from '../api/useAxios';
 import { useNavigate } from 'react-router-dom';
 import jwt_decode from "jwt-decode";
 import { MyContext } from '../Context';
@@ -9,15 +9,17 @@ function LoginPage() {
   const navigate = useNavigate();
   const {setToken, setUser} = React.useContext(MyContext);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    loginUser({email: e.target.email.value, password: e.target.password.value})
+    await api.post(import.meta.env.VITE_ROUTE_LOGIN_USER , {email: e.target.email.value, password: e.target.password.value})
       .then((res) => {
         setToken(res.data);
         setUser(jwt_decode(res.data.access));
         localStorage.setItem('token', JSON.stringify(res.data));
+        axios.defaults.headers.common['Authorization'] = 'JWT ' + res.data.access;
         navigate('/');
-      }).catch((err) => {
+      })
+      .catch((err) => {
         console.log(err);
       });
   };

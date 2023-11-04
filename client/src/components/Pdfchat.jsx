@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { LuSendHorizonal } from "react-icons/lu";
 import { MyContext } from "../Context";
-import { getPromt, getRespond, postPrompts, postResponses } from "../api/api";
+import useAxios from "../api/useAxios";
 
 export function Pdfchat() {
     const textAreaRef = useRef(null);
@@ -9,6 +9,7 @@ export function Pdfchat() {
     const [responseList, setResponseList] = useState([]);
     const [promtList, setPromtList] = useState([]);
     const {chatid} = React.useContext(MyContext);
+    const api = useAxios();
 
     function onSubmit(e) {
         e.preventDefault();
@@ -29,8 +30,20 @@ export function Pdfchat() {
             created_at: new Date().toLocaleTimeString(),
         };
 
-        postPrompts(newPromt);
-        postResponses(newResponse);
+        api.post(import.meta.env.VITE_ROUTE_PROMTS+'/', newPromt)
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        api.post(import.meta.env.VITE_ROUTE_RESPONSES +'/', newResponse)
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
         setPromtList([...promtList, newPromt]);
         setResponseList([...responseList, newResponse]);
         setPromt("");
@@ -43,7 +56,7 @@ export function Pdfchat() {
 
     useEffect(() => {
         if (chatid !== undefined) {
-            getRespond(chatid)
+            api.get(import.meta.env.VITE_ROUTE_RESPONSES+'?chatroom='+chatid)
             .then(response => {
                 // Verificar si response.data no es undefined y tiene una longitud mayor que cero
                 console.log(response);  
@@ -59,7 +72,7 @@ export function Pdfchat() {
 
     useEffect(() => {
         if (chatid !== undefined){
-            getPromt(chatid)
+            api.get(import.meta.env.VITE_ROUTE_PROMTS+'?chatroom='+chatid)
                 .then(response => {
                     // Verificar si response.data no es undefined y tiene una longitud mayor que cero
                     console.log(response);  

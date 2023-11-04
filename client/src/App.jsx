@@ -1,6 +1,6 @@
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import {FilePage} from './pages/File.jsx';
-import { MyProvider } from './Context.jsx';
+import MyProvider from './Context.jsx';
 import LoginPage from './pages/Login.jsx';
 import PrivateRoutes from './utils/PrivateRoutes.jsx';
 import Signup from './pages/Signup.jsx';

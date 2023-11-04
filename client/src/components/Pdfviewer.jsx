@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Worker, Viewer, SpecialZoomLevel  } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import { useDropzone } from 'react-dropzone';
-import { postPDF } from '../api/api'; // Importa la función postPDF desde tu archivo api
 import { MyContext } from '../Context';
-import { getPDF } from '../api/api';
+import useAxios from '../api/useAxios';
 
 export const Pdfviewer = () => {
     const { getRootProps, getInputProps, acceptedFiles, open } = useDropzone({
@@ -28,11 +27,12 @@ export const Pdfviewer = () => {
         },
     });
     const [url, setUrl] = useState('');
-    const {myState} = React.useContext(MyContext);
+    const {chatid} = React.useContext(MyContext);
+    const api = useAxios();
 
     useEffect(() => {
         // Aquí dentro, realizas la solicitud HTTP utilizando Axios o cualquier otra biblioteca que prefieras
-        getPDF(myState)
+        api.get(import.meta.env.VITE_ROUTE_FILE+'?chatroom='+chatid)
           .then(response => {
             // Cuando la promesa se resuelve con éxito, actualizas el estado con los datos
             if (response.data !== undefined && response.data.length !== 0){setUrl(response.data[0])};
@@ -42,7 +42,7 @@ export const Pdfviewer = () => {
             console.error(error);
           });
       }
-    , [myState]);
+    , [chatid]);
 
     return (
         <section className='w-full max-w-[45%] box-border'>

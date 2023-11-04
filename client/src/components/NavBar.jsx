@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { SVGComponent } from "../assets/svglogo";
 import { BsChatLeftText, BsChevronDown, BsCheckLg } from "react-icons/bs";
 import { AiOutlineUser, AiOutlineEdit, AiOutlineDelete, AiOutlineClose } from "react-icons/ai";
-import { getChatrooms, postChatroom } from "../api/api";
+import useAxios from "../api/useAxios";
 import { MyContext } from "../Context";
 import { Avatar , Divider } from "@nextui-org/react";
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Modal, ModalContent, ModalHeader,ModalBody, ModalFooter,Input, useDisclosure} from "@nextui-org/react";
@@ -16,6 +16,7 @@ export function NavBar() {
     const {setChatid, Logout} = React.useContext(MyContext);
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const [editingStates, setEditingStates] = React.useState({});
+    const api = useAxios();
 
     const handleEditClick = (chatroomId) => {
         setEditingStates((prevEditingStates) => ({
@@ -27,7 +28,7 @@ export function NavBar() {
 
     useEffect(() => {
         // Aquí dentro, realizas la solicitud HTTP utilizando Axios o cualquier otra biblioteca que prefieras
-        getChatrooms()
+        api.get(import.meta.env.VITE_ROUTE_CHATROOMS)
           .then(response => {
             // Cuando la promesa se resuelve con éxito, actualizas el estado con los datos
             setChatrooms(response.data);
@@ -39,14 +40,14 @@ export function NavBar() {
       }, []);
 
     const handleSubmit = (e) => {
-        e.preventDefault();
+        e.preventDefault(); 
 
         const newChatroom = {
             name: chatroom,
             created_at: new Date().toLocaleTimeString(),
         };
 
-        postChatroom(newChatroom)
+        api.post(import.meta.env.VITE_ROUTE_CHATROOMS+'/', newChatroom)
         .then((res) => {
             localStorage.setItem('chatid', JSON.stringify(res.data));
             setChatrooms([...chatrooms, newChatroom]);

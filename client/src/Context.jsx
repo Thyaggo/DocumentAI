@@ -1,15 +1,14 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { updateToken } from './api/api';
 
 // Create a new context
 export const MyContext = createContext();
 
 // Create a provider component
-export const MyProvider = ({ children }) => {
+const MyProvider = ({ children }) => {
     const [token, setToken] = useState(() => localStorage.getItem('token') ? 
         JSON.parse(localStorage.getItem('token'))
-     : null);
+     : undefined);
     const [chatid, setChatid] = useState( localStorage.getItem('chatid') ?
         JSON.parse(localStorage.getItem('chatid')): undefined
     );
@@ -58,3 +57,5 @@ export const MyProvider = ({ children }) => {
         </MyContext.Provider>
     );
 };
+
+export default MyProvider;
