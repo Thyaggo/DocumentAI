@@ -5,15 +5,14 @@ import { useContext } from 'react'
 import { MyContext } from '../Context';
 
 
-const baseURL = process.env.BASE_URL
+const baseURL = import.meta.env.VITE_BASE_URL
 
-
-export default useAxios = () => {
+const useAxios = () => {
     const {token, setUser, setToken} = useContext(MyContext)
 
     const axiosInstance = axios.create({
         baseURL,
-        headers:{Authorization: `JWT ${token?.access}`}
+        headers:{Authorization: token ? `JWT ${token.access}` : undefined}
     });
 
 
@@ -39,3 +38,5 @@ export default useAxios = () => {
     
     return axiosInstance
 }
+
+export default useAxios;
